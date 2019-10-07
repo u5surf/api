@@ -20,7 +20,7 @@ type Ticket struct {
 	Screenshot ScreenShot `json:"screenshot"`
 }
 
-func Fetch() {
+func main() {
 	handler := mux.NewRouter()
 	handler.HandleFunc("/api/hello", SayHello) // hello world endpoint
 	handler.HandleFunc("/api/createClient", CreateClient)
@@ -38,22 +38,4 @@ func CreateClient(respond http.ResponseWriter, request *http.Request) {
 	ticket.ID, ticket.Name = 1, "Dummy ticket"
 	fmt.Fprintf(respond, "Ticket %s (%d) will investigate url '%s' with screenshot dimensions %d x %d", ticket.Name, ticket.ID, ticket.URL, ticket.Screenshot.Width, ticket.Screenshot.Height)
 
-}
-
-func GetClient(respond http.ResponseWriter, request *http.Request) {
-	var client event
-	requestBody, err = ioutil.ReadAll(request.Body)
-	if err != nil {
-		fmt.Fprintf(respond, "Cannot get client.");
-	}
-
-	json.Unmarshal(requestBody, &client)
-	resond.WriteHeader(http.StatusCreated)
-
-	json.NewEncoder(respond).Encode(client)
-}
-
-
-func main() {
-	Fetch()
 }
