@@ -21,7 +21,7 @@ type Ticket struct {
 }
 
 func main() {
-	handler := mux.NewRouter()
+	handler := mux.NewRouter()                 // create router for handling api endpoints
 	handler.HandleFunc("/api/hello", SayHello) // hello world endpoint
 	handler.HandleFunc("/api/createClient", CreateClient)
 	fmt.Println("Server starting on localhost:8080...")
