@@ -21,21 +21,16 @@ type Ticket struct {
 }
 
 func main() {
-	handler := mux.NewRouter()                 // create router for handling api endpoints
-	handler.HandleFunc("/api/hello", SayHello) // hello world endpoint
-	handler.HandleFunc("/api/createClient", CreateClient)
+	handler := mux.NewRouter()                             // create router for handling api endpoints
+	handler.HandleFunc("/api/create-client", CreateClient) // POST endpoint for creating honeyclient
 	fmt.Println("Server starting on localhost:8080...")
 	http.ListenAndServe(":8080", handler) // listen to requests on localhost:8080
-}
-
-func SayHello(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello world!\n")
 }
 
 func CreateClient(respond http.ResponseWriter, request *http.Request) {
 	var ticket Ticket
 	json.NewDecoder(request.Body).Decode(&ticket)
 	ticket.ID, ticket.Name = 1, "Dummy ticket"
-	fmt.Fprintf(respond, "Ticket %s (%d) will investigate url '%s' with screenshot dimensions %d x %d", ticket.Name, ticket.ID, ticket.URL, ticket.Screenshot.Width, ticket.Screenshot.Height)
+	fmt.Fprintf(respond, "Ticket '%s' (%d) will investigate url '%s' with screenshot dimensions %d x %d", ticket.Name, ticket.ID, ticket.URL, ticket.Screenshot.Width, ticket.Screenshot.Height)
 
 }
