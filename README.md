@@ -14,5 +14,5 @@ Prerequisites:
 2. Run the executable named "api" (ex: if using mac run `./api`)
 
 **With Docker**
-1. Run `
+1. Run `docker run -p 8080:8080 rafibarash/csci4950tgt:api`
 
