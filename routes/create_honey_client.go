@@ -23,6 +23,10 @@ func CreateHoneyClient(w http.ResponseWriter, r *http.Request) {
 	file, _ := json.MarshalIndent(ticket, "", " ")
 	err := ioutil.WriteFile(file_name, file, 0755)
 	if err != nil {
-		fmt.Fprintf(w, "Error happens in connecting honeyclient. errno: %d.\n", err)
+		w.WriteHeader(500)
+		fmt.Fprintf(w, "Error happens in connecting honeyclient. %s.\n",
+					err.Error())
+	} else {
+		fmt.Fprintf(w, "Ticket '%s' (%d) will investigate url '%s' with screenshot dimensions %d x %d", ticket.Name, ticket.ID, ticket.URL, ticket.Screenshot.Width, ticket.Screenshot.Height)
 	}
 }
