@@ -15,7 +15,9 @@ func SetupResponse(w *http.ResponseWriter, r *http.Request) {
 
 func CreateHoneyClient(w http.ResponseWriter, r *http.Request) {
 
+	// Handling requests.
 	SetupResponse(&w, r)
+	// If request type is not current request, return error.
 	if (*r).Method != "POST" {
 		w.WriteHeader(405)
 		fmt.Fprintf(w, "Method \"%s\" is not allowed.\n",(*r).Method)
@@ -29,7 +31,7 @@ func CreateHoneyClient(w http.ResponseWriter, r *http.Request) {
 	json.NewDecoder(r.Body).Decode(&ticket)
 
 	// ID and Name are not part of the request
-	ticket.ID, ticket.Name = 1, "Dummy ticket"
+	ticket.ID = 1
 
 	// Create and write to json file
 	file_name := fmt.Sprintf("../honeyclient/input/%d.json", ticket.ID)
