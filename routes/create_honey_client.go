@@ -8,7 +8,7 @@ import (
 	"io/ioutil"
 )
 
-func SetupResponse(w *http.ResponseWriter, r *http.Request) {
+func SetupCreateResponse(w *http.ResponseWriter, r *http.Request) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 	(*w).Header().Set("Access-Control-Allow-Methos", "POST")
 }
@@ -16,7 +16,7 @@ func SetupResponse(w *http.ResponseWriter, r *http.Request) {
 func CreateHoneyClient(w http.ResponseWriter, r *http.Request) {
 
 	// Handling requests.
-	SetupResponse(&w, r)
+	SetupCreateResponse(&w, r)
 	// If request type is not current request, return error.
 	if (*r).Method != "POST" {
 		w.WriteHeader(405)

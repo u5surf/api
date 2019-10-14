@@ -8,7 +8,7 @@ import (
 	"strconv"
 )
 
-func SetupResponse(w *http.ResponseWriter, r *http.Request) {
+func SetupGetResponse(w *http.ResponseWriter, r *http.Request) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 	(*w).Header().Set("Access-Control-Allow-Methos", "GET")
 }
@@ -16,9 +16,9 @@ func SetupResponse(w *http.ResponseWriter, r *http.Request) {
 func GetHoneyClientById(w http.ResponseWriter, r *http.Request) {
 
 	// Handling requests.
-	SetupResponse(&w, r)
+	SetupGetResponse(&w, r)
 	// If request type is not current request, return error.
-	if (*r).Method != "POST" {
+	if (*r).Method != "GET" {
 		w.WriteHeader(405)
 		fmt.Fprintf(w, "Method \"%s\" is not allowed.\n",(*r).Method)
 		return
