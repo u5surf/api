@@ -20,9 +20,10 @@ func CreateHoneyClient(w http.ResponseWriter, r *http.Request) {
 
 	// Initialize header
 	header := http.Header{}
-	// header.Add("Access-Control-Allow-Origin", "*")
-	header.Add("Access-Control-Allow-Origin", "http://localhost:3000")
+	header.Add("Access-Control-Allow-Origin", "*")
+	// header.Add("Access-Control-Allow-Origin", "http://localhost:3000")
 	header.Add("Access-Control-Allow-Methods", "POST")
+	header.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
 
 	// Set header
 	util.SetHeader(w, header)
