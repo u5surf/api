@@ -10,7 +10,7 @@ import (
 
 func SetupCreateResponse(w *http.ResponseWriter, r *http.Request) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
-	(*w).Header().Set("Access-Control-Allow-Methos", "POST")
+	(*w).Header().Set("Access-Control-Allow-Method", "POST")
 }
 
 func CreateHoneyClient(w http.ResponseWriter, r *http.Request) {
