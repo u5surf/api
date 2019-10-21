@@ -7,6 +7,7 @@ import (
 	"github.com/csci4950tgt/api/util"
 	"io/ioutil"
 	"net/http"
+	"os/exec"
 )
 
 func CreateHoneyClient(w http.ResponseWriter, r *http.Request) {
@@ -45,10 +46,28 @@ func CreateHoneyClient(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO: run honeyclient and return error if failed
+	// Run honeyclient and return error if failed
+	exeCmd := exec.Command("npm", "start")
+	exeCmd.Dir = "../honeyclient/"
+	err = exeCmd.Run()
+	// TODO: we may need to parse the byte[] output to string
+	// output, err = exeCmd.Output()
+
+    if err != nil {
+        util.WriteHttpErrorCode(w, http.StatusInternalServerError, "Failed to start the honeyclient.")
+
+		fmt.Println("Failed to start honeyclient: ")
+		fmt.Println(err)
+
+		return
+    } else {
+		info := fmt.Sprintf("The output at honeyclient/output/%d", ticket.ID)
+		fmt.Println(info)
+
+	}
 
 	// Initialize Response
-	msg := fmt.Sprintf("Create ticket '%s' with ID '%d' and URL '%s'", ticket.Name, ticket.ID, ticket.URL)
+	msg := fmt.Sprintf("Create ticket at honeyclient/output/%d named '%s' with ID '%d' and URL '%s'", ticket.ID, ticket.Name, ticket.ID, ticket.URL)
 	res := models.Response{
 		Success: true,
 		Message: &msg,
