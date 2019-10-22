@@ -3,10 +3,11 @@ package routes
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/csci4950tgt/api/models"
-	"github.com/csci4950tgt/api/util"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/csci4950tgt/api/models"
+	"github.com/csci4950tgt/api/util"
 )
 
 func CreateHoneyClient(w http.ResponseWriter, r *http.Request) {
@@ -29,12 +30,9 @@ func CreateHoneyClient(w http.ResponseWriter, r *http.Request) {
 	// Create a new ticket for handling, encode request into struct
 	var ticket models.Ticket
 	json.NewDecoder(r.Body).Decode(&ticket)
-	ticket.ID = 1
 
-	// Create and write to json file
-	file_name := fmt.Sprintf("../honeyclient/input/%d.json", ticket.ID)
-	file, _ := json.MarshalIndent(ticket, "", " ")
-	err := ioutil.WriteFile(file_name, file, 0755)
+	// saves the ticket in the database:
+	err := models.CreateTicket(ticket)
 
 	if err != nil {
 		util.WriteHttpErrorCode(w, http.StatusInternalServerError, "Failed to write file for honeyclient to consume.")
@@ -44,8 +42,6 @@ func CreateHoneyClient(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
-
-	// TODO: run honeyclient and return error if failed
 
 	// Initialize Response
 	msg := fmt.Sprintf("Create ticket '%s' with ID '%d' and URL '%s'", ticket.Name, ticket.ID, ticket.URL)

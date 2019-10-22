@@ -28,8 +28,9 @@ func GetHoneyClientById(w http.ResponseWriter, r *http.Request) {
 
 	// Initialize Ticket struct
 	vars := mux.Vars(r)               // get dynamic variables from mux handler
-	id, _ := strconv.Atoi(vars["id"]) // get integer "ID" from vars
-	ticket := models.Ticket{ID: id, Name: "Hardcoded ticket", URL: "https://example.com"}
+	id, _ := strconv.Atoi(vars["id"]) // get integer "ID" from var
+
+	ticket, err := models.GetTicketById(uint(id))
 
 	// Initialize Response
 	msg := fmt.Sprintf("Fetched ticket '%s' from ID '%d' with URL '%s'", ticket.Name, ticket.ID, ticket.URL)
