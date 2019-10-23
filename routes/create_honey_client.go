@@ -37,6 +37,9 @@ func CreateHoneyClient(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// mark new ticket for processing:
+	ticket.Processed = false
+
 	// saves the ticket in the database:
 	err = models.CreateTicket(&ticket)
 
