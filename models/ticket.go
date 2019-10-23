@@ -1,6 +1,8 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+)
 
 type Ticket struct {
 	gorm.Model
@@ -9,7 +11,7 @@ type Ticket struct {
 	Screenshot ScreenShot `json:"screenshot"`
 }
 
-func CreateTicket(ticket Ticket) error {
+func CreateTicket(ticket *Ticket) error {
 	return db.Create(ticket).Error
 }
 

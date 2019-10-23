@@ -3,7 +3,6 @@ package routes
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 
 	"github.com/csci4950tgt/api/models"
@@ -29,15 +28,22 @@ func CreateHoneyClient(w http.ResponseWriter, r *http.Request) {
 
 	// Create a new ticket for handling, encode request into struct
 	var ticket models.Ticket
-	json.NewDecoder(r.Body).Decode(&ticket)
 
-	// saves the ticket in the database:
-	err := models.CreateTicket(ticket)
+	err := json.NewDecoder(r.Body).Decode(&ticket)
 
 	if err != nil {
-		util.WriteHttpErrorCode(w, http.StatusInternalServerError, "Failed to write file for honeyclient to consume.")
+		util.WriteHttpErrorCode(w, http.StatusBadRequest, "Object provided is not a valid ticket object.")
 
-		fmt.Println("Failed to write file for honeyclient to consume:")
+		return
+	}
+
+	// saves the ticket in the database:
+	err = models.CreateTicket(&ticket)
+
+	if err != nil {
+		util.WriteHttpErrorCode(w, http.StatusInternalServerError, "Failed to create entry for honeyclient to consume.")
+
+		fmt.Println("Failed to create entry for honeyclient to consume:")
 		fmt.Println(err)
 
 		return

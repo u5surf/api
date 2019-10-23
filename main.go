@@ -7,8 +7,6 @@ import (
 	"github.com/csci4950tgt/api/models"
 	"github.com/csci4950tgt/api/routes"
 	"github.com/gorilla/mux"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 func main() {
@@ -17,7 +15,7 @@ func main() {
 	handler.HandleFunc("/api/honeyclient/{id}", routes.GetHoneyClientById)  // GET endpoint for getting honeyclient by id
 
 	fmt.Println("Connecting to the database...")
-	models.db.InitDB("host=127.0.0.1 port=5432 user=gorm dbname=gorm password=gorm sslmode=disable")
+	models.InitDB("host=127.0.0.1 port=5432 user=gorm dbname=gorm password=gorm sslmode=disable")
 
 	fmt.Println("Server starting...")
 	http.ListenAndServe(":8080", handler) // listen to requests on localhost:8080
