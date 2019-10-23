@@ -8,7 +8,7 @@ type Ticket struct {
 	gorm.Model
 	Name       string     `json:"name",gorm:"size:255"`
 	URL        string     `json:"url",gorm:"size:4096"`
-	Screenshot ScreenShot `json:"screenshot"`
+	ScreenShot ScreenShot `json:"screenshot"`
 }
 
 func CreateTicket(ticket *Ticket) error {
