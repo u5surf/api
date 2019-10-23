@@ -6,10 +6,10 @@ import (
 
 type Ticket struct {
 	gorm.Model
-	Name       string     `json:"name",gorm:"size:255"`
-	URL        string     `json:"url",gorm:"size:4096"`
-	ScreenShot ScreenShot `json:"screenshot"`
-	Processed  bool       `json:"processed"`
+	Name       string       `json:"name",gorm:"size:255"`
+	URL        string       `json:"url",gorm:"size:4096"`
+	ScreenShot []ScreenShot `json:"screenshots"`
+	Processed  bool         `json:"processed"`
 }
 
 func CreateTicket(ticket *Ticket) error {
