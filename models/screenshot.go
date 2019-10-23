@@ -8,5 +8,5 @@ type ScreenShot struct {
 	gorm.Model
 	Width    int    `json:"width"`
 	Height   int    `json:"height"`
-	Filename string `json:"filename"`
+	Filename string `json:"filename",gorm:"size:255"`
 }
