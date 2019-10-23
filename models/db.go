@@ -22,5 +22,5 @@ func InitDB(dataSourceName string) {
 
 	// Migrate the schema
 	fmt.Println("Setting up the database...")
-	db.AutoMigrate(&Ticket{}, &ScreenShot{})
+	db.AutoMigrate(&Ticket{}, &ScreenShot{}, &FileArtifact{})
 }
