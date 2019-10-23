@@ -53,14 +53,14 @@ func CreateHoneyClient(w http.ResponseWriter, r *http.Request) {
 	// TODO: we may need to parse the byte[] output to string
 	// output, err = exeCmd.Output()
 
-    if err != nil {
-        util.WriteHttpErrorCode(w, http.StatusInternalServerError, "Failed to start the honeyclient.")
+	if err != nil {
+		util.WriteHttpErrorCode(w, http.StatusInternalServerError, "Failed to start the honeyclient.")
 
 		fmt.Println("Failed to start honeyclient: ")
 		fmt.Println(err)
 
 		return
-    } else {
+	} else {
 		info := fmt.Sprintf("The output at honeyclient/output/%d", ticket.ID)
 		fmt.Println(info)
 
