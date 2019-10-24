@@ -1,5 +1,23 @@
 # API for Vigilante Web Heist
 
+## API Endpoints
+
+These are the endpoints that the API currently supports. If any of these
+endpoints are out of date or not working, please create an issue.
+
+Basing off [this article](https://restfulapi.net/resource-naming/) on REST API
+naming conventions:
+
+- GET /api/honeyclients (**get all honeyclients, or maybe first 50 or
+  something**)
+- POST /api/honeyclients (**creates a honeyclient**)
+- GET /api/honeyclients/{id} (**get all information associated with a specific
+  honeyclient**)
+- GET /api/honeyclients/{id}/artifacts (**get all file artifacts like
+  screenshots or js associated with specific honeyclient**)
+- GET /api/honeyclients/{id}/artifacts/{artifact-name} (**get specific artifact
+  associated with a honeyclient**)
+
 ## How to run
 
 Prerequisites:
