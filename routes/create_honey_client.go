@@ -53,10 +53,11 @@ func CreateHoneyClient(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Initialize Response
-	msg := fmt.Sprintf("Create ticket at honeyclient/output/%d named '%s' with ID '%d' and URL '%s'", ticket.ID, ticket.Name, ticket.ID, ticket.URL)
+	msg := "Successfully created ticket."
 	res := models.Response{
 		Success: true,
 		Message: &msg,
+		Ticket:  &ticket,
 	}
 
 	util.WriteHttpResponse(w, res)
