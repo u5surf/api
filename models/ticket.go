@@ -1,8 +1,25 @@
 package models
 
+import (
+	"github.com/jinzhu/gorm"
+)
+
 type Ticket struct {
-	ID         int        `json:"id"`
-	Name       string     `json:"name"`
-	URL        string     `json:"url"`
-	Screenshot ScreenShot `json:"screenshot"`
+	gorm.Model
+	Name       string       `json:"name",gorm:"size:255"`
+	URL        string       `json:"url",gorm:"size:4096"`
+	Processed  bool         `json:"processed"`
+	ScreenShot []ScreenShot `json:"screenshots"`
+}
+
+func CreateTicket(ticket *Ticket) error {
+	return db.Create(ticket).Error
+}
+
+func GetTicketById(ID uint) (*Ticket, error) {
+	var ticket Ticket
+	// Preload line fetches the screenshot table and joins automatically:
+	err := db.Preload("ScreenShot").First(&ticket, ID).Error
+
+	return &ticket, err
 }

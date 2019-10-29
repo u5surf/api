@@ -3,11 +3,10 @@ package routes
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
+
 	"github.com/csci4950tgt/api/models"
 	"github.com/csci4950tgt/api/util"
-	"io/ioutil"
-	"net/http"
-	"os/exec"
 )
 
 func CreateHoneyClient(w http.ResponseWriter, r *http.Request) {
@@ -29,48 +28,36 @@ func CreateHoneyClient(w http.ResponseWriter, r *http.Request) {
 
 	// Create a new ticket for handling, encode request into struct
 	var ticket models.Ticket
-	json.NewDecoder(r.Body).Decode(&ticket)
-	ticket.ID = 1
 
-	// Create and write to json file
-	file_name := fmt.Sprintf("../honeyclient/input/%d.json", ticket.ID)
-	file, _ := json.MarshalIndent(ticket, "", " ")
-	err := ioutil.WriteFile(file_name, file, 0755)
+	err := json.NewDecoder(r.Body).Decode(&ticket)
 
 	if err != nil {
-		util.WriteHttpErrorCode(w, http.StatusInternalServerError, "Failed to write file for honeyclient to consume.")
-
-		fmt.Println("Failed to write file for honeyclient to consume:")
-		fmt.Println(err)
+		util.WriteHttpErrorCode(w, http.StatusBadRequest, "Object provided is not a valid ticket object.")
 
 		return
 	}
 
-	// Run honeyclient and return error if failed
-	exeCmd := exec.Command("npm", "start")
-	exeCmd.Dir = "../honeyclient/"
-	err = exeCmd.Run()
-	// TODO: we may need to parse the byte[] output to string
-	// output, err = exeCmd.Output()
+	// mark new ticket for processing:
+	ticket.Processed = false
+
+	// saves the ticket in the database:
+	err = models.CreateTicket(&ticket)
 
 	if err != nil {
-		util.WriteHttpErrorCode(w, http.StatusInternalServerError, "Failed to start the honeyclient.")
+		util.WriteHttpErrorCode(w, http.StatusInternalServerError, "Failed to create entry for honeyclient to consume.")
 
-		fmt.Println("Failed to start honeyclient: ")
+		fmt.Println("Failed to create entry for honeyclient to consume:")
 		fmt.Println(err)
 
 		return
-	} else {
-		info := fmt.Sprintf("The output at honeyclient/output/%d", ticket.ID)
-		fmt.Println(info)
-
 	}
 
 	// Initialize Response
-	msg := fmt.Sprintf("Create ticket at honeyclient/output/%d named '%s' with ID '%d' and URL '%s'", ticket.ID, ticket.Name, ticket.ID, ticket.URL)
+	msg := "Successfully created ticket."
 	res := models.Response{
 		Success: true,
 		Message: &msg,
+		Ticket:  &ticket,
 	}
 
 	util.WriteHttpResponse(w, res)
