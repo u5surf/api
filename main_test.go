@@ -32,7 +32,7 @@ func TestCreateClient(t *testing.T) {
 		t.Error("Expected http status code: 405, actual code: " + resp.Status)
 	}
 
-	request := &models.Ticket{URL: "https://www.google.com", Screenshot: models.ScreenShot{Width: 1920, Height: 1080, Filename: "screenshot.png"}}
+	request := &models.Ticket{URL: "https://www.google.com", ScreenShot: []models.ScreenShot{models.ScreenShot{Width: 1920, Height: 1080, Filename: "screenshot.png"}}}
 	requestJson, err := json.Marshal(request)
 	if err != nil {
 		t.Error(err)
@@ -48,13 +48,13 @@ func TestCreateClient(t *testing.T) {
 func TestGetHoneyClientById(t *testing.T) {
 	go main()
 	time.Sleep(1 * time.Second)
-	resp, err := http.Get("http://127.0.0.1:8080/api/honeyclient/5")
+	resp, err := http.Get("http://127.0.0.1:8080/api/honeyclient/2000000")
 	if err != nil {
 		t.Error(err)
 	}
 
 	statusCode := resp.StatusCode
-	if statusCode != http.StatusOK {
-		t.Error("HTTP error, reason " + resp.Status)
+	if statusCode != http.StatusNotFound {
+		t.Error("Expected http status code: 404, actual code: " + resp.Status)
 	}
 }
