@@ -29,6 +29,6 @@ func main() {
 
 	// Listen and serve baby
 	fmt.Println("Server starting...")
-	allowedOrigins := handlers.AllowedOrigins([]string{"http://localhost:3000, http://localhost:8000"})
+	allowedOrigins := handlers.AllowedOrigins([]string{"http://localhost:3000", "http://localhost:5000"})
 	http.ListenAndServe(":8080", handlers.CORS(allowedOrigins)(r))
 }
