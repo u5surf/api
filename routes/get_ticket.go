@@ -10,24 +10,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func GetHoneyClientById(w http.ResponseWriter, r *http.Request) {
-	// If request type is not current request, return error.
-	if (*r).Method != "GET" {
-		msg := fmt.Sprintf("Method \"%s\" is not allowed.", (*r).Method)
-		util.WriteHttpErrorCode(w, http.StatusMethodNotAllowed, msg)
-
-		return
-	}
-
-	// Initialize header
-	header := http.Header{}
-	header.Add("Access-Control-Allow-Origin", "*")
-	header.Add("Access-Control-Allow-Methods", "GET")
-
-	// Set header
-	util.SetHeader(w, header)
-
-	// Initialize Ticket struct
+func GetTicket(w http.ResponseWriter, r *http.Request) {
+	// Get variables from router
 	vars := mux.Vars(r)                 // get dynamic variables from mux handler
 	id, err := strconv.Atoi(vars["id"]) // get integer "ID" from var
 

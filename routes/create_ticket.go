@@ -9,23 +9,7 @@ import (
 	"github.com/csci4950tgt/api/util"
 )
 
-func CreateHoneyClient(w http.ResponseWriter, r *http.Request) {
-	// If request type is not current request, return error.
-	if (*r).Method != "POST" {
-		msg := fmt.Sprintf("Method \"%s\" is not allowed.", (*r).Method)
-		util.WriteHttpErrorCode(w, http.StatusMethodNotAllowed, msg)
-
-		return
-	}
-
-	// Initialize header
-	header := http.Header{}
-	header.Add("Access-Control-Allow-Origin", "*")
-	header.Add("Access-Control-Allow-Methods", "POST")
-
-	// Set header
-	util.SetHeader(w, header)
-
+func CreateTicket(w http.ResponseWriter, r *http.Request) {
 	// Create a new ticket for handling, encode request into struct
 	var ticket models.Ticket
 
@@ -37,10 +21,8 @@ func CreateHoneyClient(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// mark new ticket for processing:
+	// mark new ticket for processing and save in db:
 	ticket.Processed = false
-
-	// saves the ticket in the database:
 	err = models.CreateTicket(&ticket)
 
 	if err != nil {

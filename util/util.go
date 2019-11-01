@@ -6,13 +6,6 @@ import (
 	"net/http"
 )
 
-// Set all key, value pairs of header in response
-func SetHeader(w http.ResponseWriter, header http.Header) {
-	for k, _ := range header {
-		w.Header().Set(k, header.Get(k))
-	}
-}
-
 // Encodes a `models.Response` object as JSON, handling errors in writing
 // or sending it to the HTTP output stream.
 func WriteHttpResponse(w http.ResponseWriter, res models.Response) {
