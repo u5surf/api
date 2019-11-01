@@ -6,16 +6,29 @@ import (
 
 	"github.com/csci4950tgt/api/models"
 	"github.com/csci4950tgt/api/routes"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
-func main() {
-	handler := mux.NewRouter()                                              // create router for handling api endpoints
-	handler.HandleFunc("/api/honeyclient/create", routes.CreateHoneyClient) // POST endpoint for creating honeyclient
-	handler.HandleFunc("/api/honeyclient/{id}", routes.GetHoneyClientById)  // GET endpoint for getting honeyclient by id
+// Handles API routes for mux router
+func handleRoutes(r *mux.Router) {
+	r.HandleFunc("/api/tickets", routes.GetTickets).Methods("GET")
+	r.HandleFunc("/api/tickets", routes.CreateTicket).Methods("POST")
+	r.HandleFunc("/api/tickets/{id}", routes.GetTicket).Methods("GET")
+	r.HandleFunc("/api/tickets/{id}/artifacts", routes.GetTicketArtifacts).Methods("GET")
+	r.HandleFunc("/api/tickets/{id}/artifacts/{artifact}", routes.GetTicketArtifact).Methods("GET")
+}
 
+func main() {
+	// Initialize router
+	r := mux.NewRouter()
+	handleRoutes(r)
+
+	// Initialize DB
 	models.InitDB("host=127.0.0.1 port=5432 user=gorm dbname=gorm password=gorm sslmode=disable")
 
+	// Listen and serve baby
 	fmt.Println("Server starting...")
-	http.ListenAndServe(":8080", handler) // listen to requests on localhost:8080
+	allowedOrigins := handlers.AllowedOrigins([]string{"http://localhost:3000", "http://localhost:5000"})
+	http.ListenAndServe(":8080", handlers.CORS(allowedOrigins)(r))
 }

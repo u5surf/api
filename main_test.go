@@ -18,20 +18,23 @@ func TestConnection(t *testing.T) {
 	}
 }
 
-func TestCreateClient(t *testing.T) {
+func TestCreateTicket(t *testing.T) {
 	go main()
 	time.Sleep(1 * time.Second)
-	url := "http://127.0.0.1:8080/api/honeyclient/create"
+	url := "http://127.0.0.1:8080/api/tickets"
+
+	// Test that GET method works
 	resp, err := http.Get(url)
 	if err != nil {
 		t.Error(err)
 	}
 
 	statusCode := resp.StatusCode
-	if statusCode != http.StatusMethodNotAllowed {
-		t.Error("Expected http status code: 405, actual code: " + resp.Status)
+	if statusCode != http.StatusOK {
+		t.Error("HTTP error, reason " + resp.Status)
 	}
 
+	// Test that POST method works
 	request := &models.Ticket{URL: "https://www.google.com", ScreenShot: []models.ScreenShot{models.ScreenShot{Width: 1920, Height: 1080, Filename: "screenshot.png"}}}
 	requestJson, err := json.Marshal(request)
 	if err != nil {
@@ -43,12 +46,25 @@ func TestCreateClient(t *testing.T) {
 	if statusCode != http.StatusOK {
 		t.Error("HTTP error, reason " + resp.Status)
 	}
+
+	// Test invalid method - DELETE
+	client := &http.Client{}
+	req, err := http.NewRequest("DELETE", url, nil)
+	if err != nil {
+		t.Error(err)
+	}
+
+	resp, err = client.Do(req)
+	statusCode = resp.StatusCode
+	if statusCode != http.StatusMethodNotAllowed {
+		t.Error("Expected http status code: 405, actual code: " + resp.Status)
+	}
 }
 
-func TestGetHoneyClientById(t *testing.T) {
+func TestGetTicket(t *testing.T) {
 	go main()
 	time.Sleep(1 * time.Second)
-	resp, err := http.Get("http://127.0.0.1:8080/api/honeyclient/2000000")
+	resp, err := http.Get("http://127.0.0.1:8080/tickets/2000000")
 	if err != nil {
 		t.Error(err)
 	}
