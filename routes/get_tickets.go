@@ -1,6 +1,7 @@
 package routes
 
 import (
+	// "fmt"
 	"net/http"
 
 	"github.com/csci4950tgt/api/models"
@@ -10,13 +11,29 @@ import (
 func GetTickets(w http.ResponseWriter, r *http.Request) {
 	// TODO: Actually get all tickets
 
-	// Initialize Response
-	msg := "Not yet implemented!!"
-	res := models.Response{
-		Success: true,
-		Message: &msg,
-		// TODO: Return tickets in response
+	// get all data from database
+	// rows, err := db.QueryContext(ctx, "SELECT ALL FROM gorm")
+	rows, err := models.Rows()
+	defer rows.Close()
+
+	if err != nil {
+		util.WriteHttpErrorCode(w, http.StatusNoContent, err.Error())
+
+		return
 	}
 
-	util.WriteHttpResponse(w, res)
+	for rows.Next() {
+		var ticket models.Ticket
+		err = rows.Scan(&ticket)
+		if err != nil {
+			util.WriteHttpErrorCode(w, http.StatusPartialContent, err.Error())
+		} else {
+			res := models.Response{
+				Success: true,
+				Ticket:  &ticket,
+			}
+
+			util.WriteHttpResponse(w, res)
+		}
+	}
 }
