@@ -10,10 +10,9 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func GetTicketArtifact(w http.ResponseWriter, r *http.Request) {
+func GetTicketScreenshots(w http.ResponseWriter, r *http.Request) {
 	// Get variables from route handler
-	vars := mux.Vars(r) // get dynamic variables from mux handler
-	artifact := vars["artifact"]
+	vars := mux.Vars(r)                       // get dynamic variables from mux handler
 	ticketId, err := strconv.Atoi(vars["id"]) // get integer "id" from vars
 
 	if err != nil {
@@ -22,14 +21,14 @@ func GetTicketArtifact(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO: Actually get desired artifact from ticket
+	// TODO: Actually get screenshots from ticket
 
 	// Initialize Response
-	msg := fmt.Sprintf("Not yet implemented... ticketId: %d, Artifact: %s", ticketId, artifact)
+	msg := fmt.Sprintf("Not yet implemented... ticketId: %d", ticketId)
 	res := models.Response{
 		Success: true,
 		Message: &msg,
-		// TODO: Send artifact in response
+		// TODO: Send screenshots array in response
 	}
 
 	util.WriteHttpResponse(w, res)
