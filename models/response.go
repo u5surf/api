@@ -6,10 +6,11 @@ type ResponseError struct {
 }
 
 type Response struct {
-	Success bool           `json:"success"`
-	Error   *ResponseError `json:"error,omitempty"`
-	Message *string        `json:"message,omitempty"`
-	Ticket  *Ticket        `json:"ticket,omitempty"`
+	Success       bool            `json:"success"`
+	Error         *ResponseError  `json:"error,omitempty"`
+	Message       *string         `json:"message,omitempty"`
+	Ticket        *Ticket         `json:"ticket,omitempty"`
+	FileArtifacts *[]FileArtifact `json:"fileArtifacts,omitempty"`
 }
 
 // Makes ResponseError satisfy builtin Error type. See: https://blog.golang.org/error-handling-and-go
