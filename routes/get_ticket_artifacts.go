@@ -21,14 +21,30 @@ func GetTicketArtifacts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO: Get artifacts for ticket from database
+	// Make sure the ticket exists:
+	_, err = models.GetTicketById(uint(ticketId))
+
+	if err != nil {
+		msg := fmt.Sprintf("Failed to find ticket with ID %d.", ticketId)
+		util.WriteHttpErrorCode(w, http.StatusNotFound, msg)
+
+		return
+	}
+
+	// Fetch the list of matching file artifacts from the database:
+	fileArtifacts, err := models.GetAssociatedArtifacts(uint(ticketId))
+
+	if err != nil {
+		msg := "Failed to get a list of file artifacts associated with ticket."
+		util.WriteHttpErrorCode(w, http.StatusInternalServerError, msg)
+
+		return
+	}
 
 	// Initialize Response
-	msg := fmt.Sprintf("Not yet implemented... ticketId: %d", ticketId)
 	res := models.Response{
-		Success: true,
-		Message: &msg,
-		// TODO: add artifacts data to response
+		Success:       true,
+		FileArtifacts: fileArtifacts,
 	}
 
 	util.WriteHttpResponse(w, res)
