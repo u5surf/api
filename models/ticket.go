@@ -23,3 +23,10 @@ func GetTicketById(ID uint) (*Ticket, error) {
 
 	return &ticket, err
 }
+
+func GetTickets() (*[]Ticket, error) {
+	var tickets []Ticket
+	err := db.Find(&tickets).Error
+
+	return &tickets, err
+}

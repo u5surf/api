@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/csci4950tgt/api/models"
@@ -8,14 +9,24 @@ import (
 )
 
 func GetTickets(w http.ResponseWriter, r *http.Request) {
-	// TODO: Actually get all tickets
+	// get tickets from database
+	tickets, err := models.GetTickets()
+
+	// handle possible error
+	if err != nil {
+		msg := "Failed to fetch tickets from database."
+		util.WriteHttpErrorCode(w, http.StatusInternalServerError, msg)
+
+		fmt.Println(msg)
+		fmt.Println(err)
+
+		return
+	}
 
 	// Initialize Response
-	msg := "Not yet implemented!!"
 	res := models.Response{
 		Success: true,
-		Message: &msg,
-		// TODO: Return tickets in response
+		Tickets: tickets,
 	}
 
 	util.WriteHttpResponse(w, res)
