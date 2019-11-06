@@ -4,13 +4,8 @@ import (
 	"testing"
 )
 
-func Init() {
-	ConnectToTesting()
-	PopulateDB()
-}
-
 func TestGetAssociatedArtifacts(t *testing.T) {
-	Init()
+	ConnectToTesting()
 	artifacts, err := GetAssociatedArtifacts(1)
 	if err != nil {
 		t.Error("Error when getting artifacts associated with a ticket ID")
@@ -39,7 +34,7 @@ func TestGetAssociatedArtifacts(t *testing.T) {
 }
 
 func TestGetArtifact(t *testing.T) {
-	Init()
+	ConnectToTesting()
 	artifact, err := GetArtifact(1, "test1")
 	if err != nil {
 		t.Error("Error when getting artifacts associated with a ticket ID")
@@ -51,17 +46,5 @@ func TestGetArtifact(t *testing.T) {
 	artifact, err = GetArtifact(2, "test1")
 	if err == nil {
 		t.Error("GetArtifact did not report error when find an artifact which does not exist")
-	}
-}
-
-func PopulateDB() {
-	artifacts := []FileArtifact{
-		FileArtifact{TicketId: 1, Filename: "test1", Data: []byte("TEST1")},
-		FileArtifact{TicketId: 1, Filename: "test2", Data: []byte("TEST2")},
-		FileArtifact{TicketId: 2, Filename: "test3", Data: []byte("TEST3")},
-		FileArtifact{TicketId: 3, Filename: "test4", Data: []byte("TEST3")},
-	}
-	for _, a := range artifacts {
-		db.Create(&a)
 	}
 }
