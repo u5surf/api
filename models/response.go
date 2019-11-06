@@ -10,6 +10,7 @@ type Response struct {
 	Error         *ResponseError  `json:"error,omitempty"`
 	Message       *string         `json:"message,omitempty"`
 	Ticket        *Ticket         `json:"ticket,omitempty"`
+	Tickets       *[]Ticket       `json:"tickets,omitempty"`
 	FileArtifacts *[]FileArtifact `json:"fileArtifacts,omitempty"`
 }
 
